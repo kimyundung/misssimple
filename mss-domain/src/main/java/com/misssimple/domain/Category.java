@@ -39,5 +39,5 @@ public class Category {
     private String deletedBy;   // 删除人
 
     // 一级分类下的二级商品分类
-    private List<Category> categoryList;
+    private List<Category> children;
 }

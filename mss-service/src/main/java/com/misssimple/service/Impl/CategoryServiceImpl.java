@@ -9,6 +9,7 @@ import com.misssimple.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,4 +53,61 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return categoryList;
     }
+
+    // 根据商品分类id查询商品分类
+    @Override
+    public Category findCategoryByCatId(Integer catId) {
+        Category category = categoryMapper.findCategoryByCatId(catId);
+        return category;
+    }
+
+    // 添加商品分类
+    @Override
+    public void saveCategory(Category category) {
+        // 1.补全信息
+        Date date = new Date();
+        category.setIsDel(0);
+        category.setCreateTime(date);
+        category.setUpdateTime(date);
+        category.setCreatedBy("system");
+        category.setUpdatedBy("system");
+        // 2.调用mapper方法
+        categoryMapper.saveCategory(category);
+    }
+
+    // 更新商品分类
+    @Override
+    public void updateCategory(Category category) {
+        // 1 补全信息
+        category.setUpdateTime(new Date());
+        category.setUpdatedBy("system");
+        // 2 调用mapper方法
+        categoryMapper.updateCategory(category);
+    }
+
+    // 删除商品分类(如果是父级分类子级分类也同删掉)
+    @Override
+    public void deleteCateGory(Integer catId) {
+        // 1.根据id查询商品分类
+        Category category = categoryMapper.findCategoryByCatId(catId);
+        // 2.补全数据
+        Date date = new Date();
+        category.setDeleteTime(date);
+        category.setDeletedBy("system");
+        category.setIsDel(1);
+        // 3.如果是父子id, 则线删除子级商品分类
+        if(category.getCatPid() == 0) {
+            List<Category> secondLevelCategories = categoryMapper.findSecondLevelCategory(category.getCatId());
+            for (Category secondLevelCategory : secondLevelCategories) {
+                secondLevelCategory.setDeleteTime(date);
+                secondLevelCategory.setDeletedBy("system");
+                secondLevelCategory.setIsDel(1);
+                categoryMapper.deleteCateGory(secondLevelCategory);
+            }
+        }
+        // 4.删除商品分类
+        categoryMapper.deleteCateGory(category);
+    }
+
+
 }

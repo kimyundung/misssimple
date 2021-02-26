@@ -11,4 +11,45 @@
     <select id="findSecondLevelCategory" parameterType="int" resultType="category">
         select * from ms_category WHERE is_del = 0 AND cat_pid = #{pid} and cat_level = 2
     </select>
+
+    <!--根据商品分类id查询商品分类-->
+    <select id="findCategoryByCatId" parameterType="int" resultType="category">
+        select * from ms_category where is_del = 0 AND cat_id = #{catId}
+    </select>
+
+    <!--添加商品分类-->
+    <select id="saveCategory" parameterType="category">
+        insert into ms_category values (
+        null,#{catName},#{catPid},#{catLevel},#{catIcon},#{catSrc},
+        #{isDel},#{createTime},#{updateTime},null,#{createdBy},#{updatedBy},null
+        )
+    </select>
+    
+    <!--更新商品分类-->
+    <update id="updateCategory" parameterType="category">
+        update ms_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="catName!=null and catName!=''">
+                cat_name = #{catName},
+            </if>
+            <if test="updateTime!=null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updatedBy!=null and updatedBy!=''">
+                updated_by = #{updatedBy},
+            </if>
+        </trim>
+        <where>
+            <if test="catId!=null">
+                cat_id = #{catId}
+            </if>
+        </where>
+    </update>
+
+    <!--删除商品分类-->
+    <update id="deleteCateGory" parameterType="category">
+        update ms_category
+        set is_del=#{isDel}, delete_time=#{deleteTime}, deleted_by=#{deletedBy}
+        where cat_id = #{catId}
+    </update>
 </mapper>

@@ -14,6 +14,9 @@ public interface CategoryMapper {
     public List<Category> findSecondLevelCategory(Integer pid);
     // 根据商品分类id查询商品分类
     public Category findCategoryByCatId(Integer catId);
+    // 查询商品分类下的商品数量
+    public Integer findGoodsByCatId(Integer catId);
+
     // 添加分类
     public void saveCategory(Category category);
     // 更新商品分类

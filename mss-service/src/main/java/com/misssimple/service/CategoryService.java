@@ -21,5 +21,5 @@ public interface CategoryService {
     // 更新商品分类
     public void updateCategory(Category category);
     // 删除商品分类(如果是父级分类子级分类也同删掉)
-    public void deleteCateGory(Integer catId);
+    public String deleteCateGory(Integer catId);
 }

@@ -83,11 +83,11 @@ public class CategoryController {
     @RequestMapping("/deleteCateGory")
     public ResponseResult deleteCateGory(Integer catId){
         // 1 调用service方法
-        categoryService.deleteCateGory(catId);
+        String string = categoryService.deleteCateGory(catId);
         // 2 响应数据
         ResponseResult result = new ResponseResult();
         result.setData(null);
-        result.setMeta(new Meta(203,"成功删除商品分类"));
+        result.setMeta(new Meta(203,string));
         return result;
     }
 }

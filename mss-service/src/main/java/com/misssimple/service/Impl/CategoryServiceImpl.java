@@ -87,26 +87,62 @@ public class CategoryServiceImpl implements CategoryService {
 
     // 删除商品分类(如果是父级分类子级分类也同删掉)
     @Override
-    public void deleteCateGory(Integer catId) {
+    public String deleteCateGory(Integer catId) {
+
+        String string = "";
+        Integer count = 0;
+        Date date = new Date();
+
         // 1.根据id查询商品分类
         Category category = categoryMapper.findCategoryByCatId(catId);
-        // 2.补全数据
-        Date date = new Date();
-        category.setDeleteTime(date);
-        category.setDeletedBy("system");
-        category.setIsDel(1);
         // 3.如果是父子id, 则线删除子级商品分类
         if(category.getCatPid() == 0) {
             List<Category> secondLevelCategories = categoryMapper.findSecondLevelCategory(category.getCatId());
             for (Category secondLevelCategory : secondLevelCategories) {
-                secondLevelCategory.setDeleteTime(date);
-                secondLevelCategory.setDeletedBy("system");
-                secondLevelCategory.setIsDel(1);
-                categoryMapper.deleteCateGory(secondLevelCategory);
+                // 0.商品分类下是否有商品?
+                Integer goodsCount = categoryMapper.findGoodsByCatId(secondLevelCategory.getCatId());
+                if (goodsCount != 0){
+                    string += " " + secondLevelCategory.getCatName();
+                }
+                count += goodsCount;
+            }
+            // 分类下无商品
+            if(count == 0){
+                // 删除
+                for (Category secondLevelCategory : secondLevelCategories) {
+                    secondLevelCategory.setDeleteTime(date);
+                    secondLevelCategory.setDeletedBy("system");
+                    secondLevelCategory.setIsDel(1);
+                    categoryMapper.deleteCateGory(secondLevelCategory);
+                }
+                // 补全数据
+                category.setDeleteTime(date);
+                category.setDeletedBy("system");
+                category.setIsDel(1);
+                categoryMapper.deleteCateGory(category);
+                return "成功删除商品分类";
+            }
+            // 分类下有商品
+            else {
+                // 提示
+                return string + " 分类下有商品";
             }
         }
-        // 4.删除商品分类
-        categoryMapper.deleteCateGory(category);
+        // 删除子级商品分类
+        Integer goodsCount = categoryMapper.findGoodsByCatId(catId);
+        if(goodsCount == 0){
+            // 删除
+            // 补全数据
+            category.setDeleteTime(date);
+            category.setDeletedBy("system");
+            category.setIsDel(1);
+            categoryMapper.deleteCateGory(category);
+            return "成功删除商品分类";
+        } else {
+            // 提示
+            string = category.getCatName();
+            return string  + " 分类下有商品";
+        }
     }
 
 

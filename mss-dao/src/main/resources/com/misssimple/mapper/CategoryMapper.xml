@@ -17,6 +17,11 @@
         select * from ms_category where is_del = 0 AND cat_id = #{catId}
     </select>
 
+    <!--查询商品分类下的商品数量-->
+    <select id="findGoodsByCatId" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM ms_goods WHERE cat_id = #{catId}
+    </select>
+
     <!--添加商品分类-->
     <select id="saveCategory" parameterType="category">
         insert into ms_category values (

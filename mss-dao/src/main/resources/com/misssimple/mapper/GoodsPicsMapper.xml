@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.misssimple.mapper.GoodsPicsMapper">
+    <!--添加商品相册-->
+    <insert id="saveGoodsPics" parameterType="goodspics">
+        insert into ms_goods_pics values (
+        null,#{goodsId},#{picsBig},null,null,#{isDel},#{createTime},#{updateTime},null,#{createdBy},#{updatedBy},null
+        )
+    </insert>
+
+    <!--根据商品id查询相册-->
+    <select id="findGoodsPicsByGoodsId" parameterType="int" resultType="goodspics">
+        select * from ms_goods_pics where goods_id = #{goodsId}
+    </select>
+
+    <!--根据商品id删除相册(物理删除)-->
+    <delete id="deleteGoodsPicsByGoodsId" parameterType="int">
+        delete from ms_goods_pics where goods_id = #{goodsId} and is_del = 0
+    </delete>
+
+    <!--根据商品id删除相册(逻辑删除)-->
+    <update id="deleteGoodsPicsByGoodsId2" parameterType="goodspics">
+        update ms_goods_pics set is_del = #{isDel}, delete_time=#{deleteTime}, deleted_by=#{deletedBy} where goods_id = #{goodsId}
+    </update>
+</mapper>

@@ -44,4 +44,22 @@ http://www.springframework.org/schema/aop/spring-aop.xsd">
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.misssimple.mapper"/>
     </bean>
+
+    <!--事务管理器-->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="druidDataSource"/>
+    </bean>
+    <!--通知增强-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!--定义事务的属性-->
+        <tx:attributes>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--aop配置-->
+    <aop:config>
+        <!--切面配置-->
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.misssimple.service..*.*Tran(..))"/>
+    </aop:config>
 </beans>

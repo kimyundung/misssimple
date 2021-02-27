@@ -1,6 +1,83 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
+<mapper namespace="com.misssimple.mapper.UserMapper">
+    <!--条件查询用户-->
+    <select id="findUserByCondition" parameterType="uservo" resultType="user">
+        select * from ms_user
+        <where>
+            <if test="true">
+                and is_del = 0
+            </if>
+            <if test="username!=null and username!=''">
+                and phone like concat('%',#{username},'%') or name like concat('%',#{username},'%')
+            </if>
+            <if test="startCreateTime!=null and endCreateTime!=null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--更新用户状态-->
+    <update id="updateUserStatus" parameterType="user">
+        update ms_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="status!=null">
+                status = #{status},
+            </if>
+            <if test="updateTime!=null">
+                update_time = #{updateTime},
+            </if>
+        </trim>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <!--添加用户-->
+    <insert id="saveUser" parameterType="user">
+        INSERT INTO ms_user (NAME,portrait,phone,password,reg_ip,create_time,update_time) VALUES (
+        #{name},#{portrait},#{phone},#{password},#{regIp},#{createTime},#{updateTime}
+        )
+    </insert>
+
+    <!--更新用户-->
+    <update id="updateUser" parameterType="user">
+        update ms_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name!=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="portrait!=null and portrait!=''">
+                portrait = #{portrait},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone = #{phone},
+            </if>
+            <if test="password!=null and password!=''">
+                password = #{password},
+            </if>
+            <if test="updateTime!=null">
+                update_time = #{updateTime},
+            </if>
+        </trim>
+        <where>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <!--删除用户-->
+    <update id="deleteUser" parameterType="int">
+        update ms_user set is_del = 1 where id = #{id}
+    </update>
+
+    <!--用户登录-->
+    <select id="login" parameterType="string" resultType="user">
+        select * from ms_user where phone = #{username} or name = #{usename}
+    </select>
 
 </mapper>

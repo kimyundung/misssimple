@@ -82,6 +82,7 @@ public class UserController {
     // 用户登录
     @RequestMapping("/login")
     public ResponseResult login(@RequestBody UserVo userVo) throws Exception {
+        System.out.println(">>>>>>>>>>>>> " + userVo);
         User user = userService.login(userVo);
         ResponseResult result = new ResponseResult();
         result.setData(user);
@@ -90,6 +91,7 @@ public class UserController {
         } else {
             result.setMeta(new Meta(500,"用户名或密码错误"));
         }
+        System.out.println(">>>>>>>>>>> result: " + result);
         return result;
     }
 }

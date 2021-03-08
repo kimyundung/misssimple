@@ -3,6 +3,7 @@ package com.misssimple.domain;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 @Data
 @ToString
-public class User {
+public class User implements Serializable {
     private Integer id;         // 用户id
     private String name;        // 用户昵称
     private String portrait;    // 用户头像地址

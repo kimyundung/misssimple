@@ -1,5 +1,6 @@
 package com.misssimple.service.Impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.misssimple.domain.User;
@@ -8,7 +9,7 @@ import com.misssimple.mapper.UserMapper;
 import com.misssimple.service.UserService;
 import com.misssimple.utils.Md5;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+//import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.misssimple.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import com.misssimple.domain.Meta;
 import com.misssimple.domain.ResponseResult;
@@ -18,7 +19,8 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
+    //@Autowired
+    @Reference
     private UserService userService;
 
     // 分页条件查询用户

@@ -1,5 +1,6 @@
 package com.misssimple.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import com.misssimple.domain.Category;
 import com.misssimple.domain.CategoryVo;
@@ -21,7 +22,8 @@ import java.util.List;
 @RequestMapping("/category")
 public class CategoryController {
 
-    @Autowired
+    //@Autowired
+    @Reference
     private CategoryService categoryService;
 
     // 查询商品分类

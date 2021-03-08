@@ -2,12 +2,15 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/mvc
 http://www.springframework.org/schema/mvc/spring-mvc.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context.xsd">
+http://www.springframework.org/schema/context/spring-context.xsd
+http://code.alibabatech.com/schema/dubbo
+http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
     <!--1.注解扫描-->
     <context:component-scan base-package="com.misssimple.controller"/>
     <!--2.mvc注解增强-->
@@ -26,4 +29,11 @@ http://www.springframework.org/schema/context/spring-context.xsd">
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="1048576"></property>
     </bean>
+
+    <!--dubbo的应用名称-->
+    <dubbo:application name="mss-web"/>
+    <!--配置dubbo的注册中心地址-->
+    <dubbo:registry address="zookeeper://192.168.8.128:2181"/>
+    <!--配置dubbo扫描类, 将这个类作为服务进行发布-->
+    <dubbo:annotation package="com.misssimple.controller"/>
 </beans>

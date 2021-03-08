@@ -1,5 +1,6 @@
 package com.misssimple.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.pagehelper.PageInfo;
 import com.misssimple.domain.Goods;
 import com.misssimple.domain.GoodsVo;
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/goods")
 public class GoodsController {
 
-    @Autowired
+    //@Autowired
+    @Reference
     private GoodsService goodsService;
 
     // 根据条件分页查询商品
